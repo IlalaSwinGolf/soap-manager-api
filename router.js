@@ -3,9 +3,14 @@
 
 const express = require('express');
 const APIVersion = require('./api-version')();
+const categoryRoutes = require('./routes/category');
+
 
 let router = function (app) {
     const routes = express.Router();
+
+    routes.use('/category', categoryRoutes);
+
     routes.all('*', (req, res, next) =>
         res.json({
             error: {
