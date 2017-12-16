@@ -61,10 +61,9 @@ exports.up = function (knex, Promise) {
 
     function createCompositionTable() {
         return knex.schema.createTableIfNotExists('compositions', function (table) {
-            table.increments('id').unsigned().primary();
             table.integer('recipe_id').references('id').inTable('recipes').onDelete("CASCADE");
             table.integer('product_id').references('id').inTable('products').onDelete("CASCADE");
-            table.unique(['recipe_id', 'product_id']);
+            table.primary(['recipe_id', 'product_id']);
             table.float('percentage').notNullable();
             table.timestamps();
         });
