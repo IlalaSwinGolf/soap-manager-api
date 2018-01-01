@@ -50,7 +50,9 @@ module.exports = {
                 } else {
                     res.status(404).json({
                         success: false,
-                        data: "Category not found"
+                        data: {
+                            message: "La catégorie n'existe pas"
+                        }
                     });
                 }
             } catch (err) {
@@ -80,7 +82,9 @@ module.exports = {
                 } else {
                     res.status(404).json({
                         success: false,
-                        data: "Category not found"
+                        data: {
+                            message: "La catégorie n'existe pas"
+                        }
                     });
                 }
             } catch (err) {
@@ -95,34 +99,38 @@ module.exports = {
         promise.coroutine(function* () {
             try {
 
-                let category = yield Category.forge({
-                        id: req.params.id
-                    })
-                    .fetch({
-                        require: true
-                    });
+                let category = yield Category.findOne({
+                    "id": parseInt(req.params.id)
+                }, {});
                 if (category) {
                     category.destroy()
                         .then(function () {
                             res.json({
-                                error: true,
+                                success: true,
                                 data: {
-                                    message: 'Category successfully deleted'
+                                    message: 'Categorie supprimée avec succès'
                                 }
                             });
                         })
                         .catch(function (err) {
                             res.status(500).json({
-                                error: true,
+                                success: false,
                                 data: {
                                     message: err.message
                                 }
                             });
                         });
+                } else {
+                    res.status(404).json({
+                        success: false,
+                        data: {
+                            message: "La catégorie n'existe pas"
+                        }
+                    });
                 }
             } catch (err) {
                 res.status(500).json({
-                    error: true,
+                    success: false,
                     data: {
                         message: err.message
                     }
