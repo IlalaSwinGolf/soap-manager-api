@@ -9,6 +9,9 @@ let category = baseModel.extend({
     update: function (fields, options) {
         return this.save(fields, options);
     },
+    products: function () {
+            return this.hasMany('Product', 'category_id');
+    }
 });
 
 module.exports = bookshelf.model('Category', category);

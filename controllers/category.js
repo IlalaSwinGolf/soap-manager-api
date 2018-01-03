@@ -9,7 +9,7 @@ module.exports = {
     findAll: (req, res, next) => {
         promise.coroutine(function* () {
             try {
-                const categories = yield Category.findAll(req.query, {});
+                const categories = yield Category.findAll(req.query, {withRelated: ['products']});
                 res.status(200).json({
                     success: true,
                     data: categories
@@ -25,7 +25,7 @@ module.exports = {
     findOne: (req, res, next) => {
         promise.coroutine(function* () {
             try {
-                const category = yield Category.findOne(req.params, {});
+                const category = yield Category.findOne(req.params, {withRelated: ['products']});
                 res.status(200).json({
                     success: true,
                     data: category
@@ -68,7 +68,7 @@ module.exports = {
             try {
                 let category = yield Category.findOne({
                     "id": parseInt(req.params.id)
-                }, {});
+                }, {withRelated: ['products']});
                 if (category) {
                     category = yield category.update(JSON.parse(JSON.stringify(req.body)), {
                         patch: true,
